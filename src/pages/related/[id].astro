@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+async function fetchPost(postId:string) {
+  const response = await fetch(`https://dummyjson.com/posts/${postId}`);
+  const post = await response.json();
+  return post;
+}
+
+async function fetchUser(userId:string) {
+  const response = await fetch(`https://dummyjson.com/users/${userId}`);
+  const user = await response.json();
+  return user;
+}
+
+const post = await fetchPost(id);
+const user = await fetchUser(post.userId);
+
+// Definir variables para el diseño
+const title = post.title;
+const description = post.body;
+const publishDate = post.date;
+const permalink = `${Astro.url}`;
+---
+
+<BaseLayout title={title} description={description} permalink={permalink} current="related">
+  <div class="container">
+    <p>{publishDate}</p>
+    <h1>{title}</h1>
+    <hr />
+    <article class="content">
+      <div>
+        <p>{post.body}</p>
+        <p><strong>Author:</strong> {user.firstName} {user.lastName}</p>
+        <p><strong>Contact:</strong> {user.email}</p>
+      </div>
+    </article>
+    <hr />
+  </div>
+</BaseLayout>
+
+<style>
+  header {
+    text-align: center;
+  }
+
+  header h1 {
+    margin-bottom: 0.7em;
+  }
+
+  header p {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-family: var(--font-family-sans);
+    font-weight: 600;
+  }
+
+  header hr {
+    min-width: 100px;
+    width: 30%;
+  }
+</style>

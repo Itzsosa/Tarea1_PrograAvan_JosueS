@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const title = 'Related Articles';
+const description = 'Related articles.';
+const permalink = `${Astro.url.pathname}`;
+const pageSize = 5;
+let currentPage = parseInt(Astro.url.searchParams.get('page') || '1');
+
+//get User from API
+async function fetchUser(userId: any) {
+  const response = await fetch(`https://dummyjson.com/users/${userId}`);
+  const user = await response.json();
+  return user;
+}
+
+//get Posts from API
+const response = await fetch('https://dummyjson.com/posts?limit=50');
+const data = await response.json();
+const allPosts = data.posts;
+const postsWithUsers = await Promise.all(
+  allPosts.map(async (post: any) => {
+    const user = await fetchUser(post.userId);
+    return {
+      ...post,
+      user,
+    };
+  })
+);
+
+const totalPages = Math.ceil(allPosts.length / pageSize);
+const paginatedPosts = postsWithUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+---
+
+<BaseLayout title={title} description={description} permalink={permalink} current="related">
+  <div class="container">
+    <h1>Related articles</h1>
+    {paginatedPosts.map((post, index) => {
+      const href = `/related/${post.id}`;
+      return (
+        <div>
+          {index !== 0 && <hr />}
+          <div class="post-item">
+            <h2>
+              <a href={href}>{post.title}</a>
+            </h2>
+            <p>{post.user.firstName} {post.user.lastName}</p>
+            <div class="post-item-footer">
+              <span class="post-item-views"> — {post.views} views</span>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+    <div class="pagination">
+      {Array.from({ length: totalPages }).map((_, i) => {
+        const pageNumber = i + 1;
+        return (
+          <a href={`?page=${pageNumber}`} class={pageNumber === currentPage ? 'active' : ''}>
+            {pageNumber}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  h2,
+  .post-item-footer {
+    font-family: var(--font-family-sans);
+    font-weight: 700;
+  }
+  .post-item-views {
+    color: var(--text-secondary);
+    text-align: left;
+    text-transform: uppercase;
+    margin-right: 16px;
+  }
+  hr {
+    margin: 60px auto;
+  }
+  .pagination {
+    margin-top: 20px;
+  }
+  .pagination a {
+    margin: 0 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #000;
+  }
+  .pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+</style>

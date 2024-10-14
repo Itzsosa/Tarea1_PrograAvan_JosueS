@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'About';
+const description = 'About your blog.';
+const permalink = `${Astro.url}about`;
+---
+
+<BaseLayout title={title} description={description} permalink={permalink} current="about">
+  <div class="container">
+    <h1>About</h1>
+    <figure class="about-image">
+      <img src="/assets/about-illustration.webp" alt="Illustration of a notebook" width="330">
+      <figcaption>
+        Illustration by
+        <a href="https://icons8.com/illustrations/author/5c07e68d82bcbc0092519bb6" target="_blank" rel="noopener">Icons 8</a>
+        from
+        <a href="https://icons8.com/illustrations" target="_blank" rel="noopener">Ouch!</a>
+      </figcaption>
+    </figure>
+    <p>So you two explore new horizons and make groundbreaking discoveries? What do they have in there? Endless possibilities? My dad once told me, "Laugh and the world laughs with you. Cry, and I'll help you find a solution." Life always finds a way. We learn from the past, innovate in the present, and create a brighter future. We transform challenges into opportunities and ideas into reality.</p> 
+    <p>Do you really believe you can achieve your dreams? You know what? It's all about perseverance. Even if you crash into obstacles, you keep moving forward. Focus on your goals! Drive us to success! Is this my espresso machine? Wh-what is-h-how did you get my espresso machine? Every challenge is a chance to grow.</p> 
+    <p>Hey, you know how I'm always trying to make a difference? Here's my chance. Take a look at the potential within us. Goodbye to limitations! I was part of something extraordinary. Just my luck, no ice? No problem, we adapt! You're a very talented young person with unique thoughts and ideas. Do you need a mentor?</p> 
+    <p>Jaguar shark! So tell me - does it really exist? This opportunity comes fully loaded. AM/FM radio, reclining bucket seats, and... power windows. Yes, yes, without the mistakes! You're a very talented young person with unique thoughts and ideas. Do you need a mentor?</p> 
+    <p>Yes, yes, without the mistakes! Do you know how long it takes to create lasting change? We're using our own resources to our advantage. And the clock is ticking. Do you know how long it takes to create lasting change? My dad once told me, "Laugh and the world laughs with you. Cry, and I'll help you find a solution."</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-image {
+    float: right;
+    margin: -3em -7em 2em 2em;
+    max-width: 300px;
+  }
+
+  .about-image img {
+    border-radius: 8px;
+    margin-bottom: 1.5em;
+  }
+
+  @media (max-width: 1020px) {
+    .about-image {
+      float: none;
+      margin: 0 auto 2em;
+    }
+  }
+</style>
