@@ -7,5 +7,11 @@ export default defineConfig({
   integrations: [mdx()],
   adapter: node({
     mode: 'standalone'
-  })
+  }),
+  vite: {
+    test: {
+      globals: true,
+      environment: 'jsdom',
+    },
+  },
 });
